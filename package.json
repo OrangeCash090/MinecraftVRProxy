@@ -1,0 +1,23 @@
+{
+  "name": "MinecraftVRProxy",
+  "version": "1.0.0",
+  "description": "website",
+  "main": "app.js",
+  "repository": "https://github.com/OrangeCash090/MinecraftVRProxy",
+  "author": "OrangeCash090",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "debug": "^4.3.4",
+    "fs": "^0.0.1-security",
+    "uuid4": "^2.0.3",
+    "vec3": "^0.1.10",
+    "ws": "^8.17.0"
+  },
+  "engines": {
+    "node": ">=14"
+  }
+}
