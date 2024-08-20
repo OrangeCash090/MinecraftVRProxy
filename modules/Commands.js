@@ -1,5 +1,4 @@
 const JSONSender = require("./JSONSender");
-const Animation = require("./Animation");
 const { Vec3 } = require("vec3");
 
 var currentAnimation = null;
