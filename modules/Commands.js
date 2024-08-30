@@ -51,15 +51,15 @@ class CommandHandler {
             },
 
             start: (sender, args) => {
-                var head = server.vrTrackers.head;
-                var leftHand = server.vrTrackers.lefthand;
-                var rightHand = server.vrTrackers.righthand;
+                client.on("VRTrackingData", (vrTrackers) => {
+                    var head = vrTrackers.head;
+                    var leftHand = vrTrackers.lefthand;
+                    var rightHand = vrTrackers.righthand;
 
-                setInterval(() => {
                     JSONSender.sendCommand(client, `/particle minecraft:balloon_gas_particle ${head.position.x} ${head.position.y} ${head.position.z}`);
                     JSONSender.sendCommand(client, `/particle minecraft:balloon_gas_particle ${leftHand.position.x} ${leftHand.position.y} ${leftHand.position.z}`);
                     JSONSender.sendCommand(client, `/particle minecraft:balloon_gas_particle ${rightHand.position.x} ${rightHand.position.y} ${rightHand.position.z}`);
-                }, 20);
+                }
             }
         }
 
