@@ -19,6 +19,14 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
 }
 
+function toRadians(angle) {
+    return angle * (Math.PI / 180);
+}
+
+function toDegrees(angle) {
+    return angle * (180 / Math.PI);
+}
+
 class CommandHandler {
     constructor(server, client) {
         this.help = [
@@ -61,8 +69,7 @@ class CommandHandler {
                     var leftHand = vrTrackers.lefthand;
                     var rightHand = vrTrackers.righthand;
 
-                    console.log(head.rotation);
-                    headCube.cframe = new CFrame(head.position.x, head.position.y, head.position.z).multiply(CFAngles(head.rotation.x, head.rotation.y, head.rotation.z));
+                    headCube.cframe = new CFrame(head.position.x, head.position.y, head.position.z).multiply(CFAngles(toRadians(head.rotation.x), toRadians(head.rotation.y), toRadians(head.rotation.z)));
                     JSONSender.sendCommand(client, `/particle minecraft:balloon_gas_particle ${leftHand.position.x} ${leftHand.position.y} ${leftHand.position.z}`);
                     JSONSender.sendCommand(client, `/particle minecraft:balloon_gas_particle ${rightHand.position.x} ${rightHand.position.y} ${rightHand.position.z}`);
 
