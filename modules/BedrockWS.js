@@ -33,15 +33,12 @@ class Server {
             socket.on("message", (msg) => {
                 if (msg == "keepalive") { return };
 
-                try {
-                    var parsedMsg = JSON.parse(msg);
+                var parsedMsg = JSON.parse(msg);
 
-                    if (parsedMsg.head != undefined) {
-                        console.log(parsedMsg.head);
-                        this.vrTrackers = parsedMsg;
-                        return;
-                    }
-
+                if (parsedMsg.head != undefined) {
+                    console.log(parsedMsg.head);
+                    this.vrTrackers = parsedMsg;
+                } else {
                     var reqID = parsedMsg.header.requestId;
                     var resolver = socket.responseResolvers.get(reqID);
 
@@ -80,8 +77,6 @@ class Server {
                     if (parsedMsg.header.eventName == "ItemInteracted") {
                         socket.emit("itemInteracted", parsedMsg.body.item.id, parsedMsg.body.item.enchantments[0]);
                     }
-                } catch {
-
                 }
             })
 
