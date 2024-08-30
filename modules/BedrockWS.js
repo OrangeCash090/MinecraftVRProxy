@@ -14,7 +14,6 @@ class Server {
 
         this.connectedSockets = [];
         this.lastId = 0;
-        this.vrTrackers = {};
 
         this.websocket.on("connection", async (conn) => {
             var playerName = `Guest ${this.lastId}`;
@@ -36,7 +35,7 @@ class Server {
                 var parsedMsg = JSON.parse(msg);
 
                 if (parsedMsg.head != undefined) {
-                    this.vrTrackers = parsedMsg;
+                    socket.emit("VRTrackingData", parsedMsg);
                 } else {
                     var reqID = parsedMsg.header.requestId;
                     var resolver = socket.responseResolvers.get(reqID);
