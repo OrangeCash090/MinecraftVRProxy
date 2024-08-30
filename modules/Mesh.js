@@ -104,7 +104,7 @@ class Mesh {
 }
 
 class Cube extends Mesh {
-    constructor(ws, detail = 4) {
+    constructor(ws, detail = 3) {
         super(ws, [
             new Vec3(1,1,1),
             new Vec3(-1,1,1),
