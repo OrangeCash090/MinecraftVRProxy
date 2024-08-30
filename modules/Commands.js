@@ -52,6 +52,7 @@ class CommandHandler {
 
             start: (sender, args) => {
                 client.on("VRTrackingData", (vrTrackers) => {
+                    console.log("ayy");
                     var head = vrTrackers.head;
                     var leftHand = vrTrackers.lefthand;
                     var rightHand = vrTrackers.righthand;
