@@ -33,8 +33,8 @@ class Server {
             socket.on("message", (msg) => {
                 if (msg == "keepalive") { return };
 
+                console.log(msg);
                 var parsedMsg = JSON.parse(msg);
-                console.log(parsedMsg);
 
                 if (parsedMsg.head != undefined) {
                     console.log(parsedMsg.head);
