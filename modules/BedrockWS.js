@@ -37,6 +37,7 @@ class Server {
                     var parsedMsg = JSON.parse(msg);
 
                     if (parsedMsg.head != undefined) {
+                        console.log(parsedMsg.head);
                         this.vrTrackers = parsedMsg;
                         return;
                     }
