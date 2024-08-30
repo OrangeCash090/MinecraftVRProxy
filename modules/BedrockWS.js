@@ -34,6 +34,7 @@ class Server {
                 if (msg == "keepalive") { return };
 
                 var parsedMsg = JSON.parse(msg);
+                console.log(parsedMsg);
 
                 if (parsedMsg.head != undefined) {
                     console.log(parsedMsg.head);
