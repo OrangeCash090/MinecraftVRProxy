@@ -60,7 +60,7 @@ class CommandHandler {
                     JSONSender.sendCommand(client, `/particle minecraft:balloon_gas_particle ${head.position.x} ${head.position.y} ${head.position.z}`);
                     JSONSender.sendCommand(client, `/particle minecraft:balloon_gas_particle ${leftHand.position.x} ${leftHand.position.y} ${leftHand.position.z}`);
                     JSONSender.sendCommand(client, `/particle minecraft:balloon_gas_particle ${rightHand.position.x} ${rightHand.position.y} ${rightHand.position.z}`);
-                }
+                });
             }
         }
 
