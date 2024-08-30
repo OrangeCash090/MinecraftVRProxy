@@ -17,7 +17,7 @@ function getSize(verts) {
 }
 
 class Mesh {
-    constructor(ws, verticies, connections = [], detail = 4) {
+    constructor(ws, verticies, connections = [], detail = 3) {
         this.ws = ws;
 
         this.name = "Shape"
