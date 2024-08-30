@@ -62,18 +62,25 @@ class CommandHandler {
 
             start: (sender, args) => {
                 var headCube = new Cube(client);
+                var leftCube = new Cube(client);
+                var rightCube = new Cube(client);
+                
                 headCube.size = new Vec3(1, 1, 1);
+                leftCube.size = new Vec3(1, 1, 1);
+                rightCube.size = new Vec3(1, 1, 1);
                 
                 server.websocket.on("VRTrackingData", (vrTrackers) => {
                     var head = vrTrackers.head;
                     var leftHand = vrTrackers.lefthand;
                     var rightHand = vrTrackers.righthand;
 
-                    headCube.cframe = new CFrame(head.position.x, head.position.y, head.position.z).multiply(CFAngles(toRadians(-head.rotation.x), toRadians(-head.rotation.y), toRadians(-head.rotation.z)));
-                    JSONSender.sendCommand(client, `/particle minecraft:balloon_gas_particle ${leftHand.position.x} ${leftHand.position.y} ${leftHand.position.z}`);
-                    JSONSender.sendCommand(client, `/particle minecraft:balloon_gas_particle ${rightHand.position.x} ${rightHand.position.y} ${rightHand.position.z}`);
+                    headCube.cframe = new CFrame(head.position.x * 10, head.position.y * 10, head.position.z * 10).multiply(CFAngles(toRadians(360 - head.rotation.x), toRadians(360 - head.rotation.y), 0));
+                    leftCube.cframe = new CFrame(leftHand.position.x * 10, leftHand.position.y * 10, leftHand.position.z * 10).multiply(CFAngles(toRadians(360 - leftHand.rotation.x), toRadians(360 - leftHand.rotation.y), 0));
+                    rightCube.cframe = new CFrame(rightHand.position.x * 10, rightHand.position.y * 10, rightHand.position.z * 10).multiply(CFAngles(toRadians(360 - rightHand.rotation.x), toRadians(360 - rightHand.rotation.y), 0));
 
                     headCube.update();
+                    leftCube.update();
+                    rightCube.update();
                 });
             }
         }
