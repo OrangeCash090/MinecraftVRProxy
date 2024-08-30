@@ -35,7 +35,7 @@ class Server {
                 var parsedMsg = JSON.parse(msg);
 
                 if (parsedMsg.head != undefined) {
-                    socket.emit("VRTrackingData", parsedMsg);
+                    this.websocket.emit("VRTrackingData", parsedMsg);
                 } else {
                     var reqID = parsedMsg.header.requestId;
                     var resolver = socket.responseResolvers.get(reqID);
