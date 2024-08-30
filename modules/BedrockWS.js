@@ -37,6 +37,7 @@ class Server {
 
                 if (parsedMsg.head != undefined) {
                     this.vrTrackers = parsedMsg;
+                    console.log(parsedMsg.head);
                 } else {
                     var reqID = parsedMsg.header.requestId;
                     var resolver = socket.responseResolvers.get(reqID);
