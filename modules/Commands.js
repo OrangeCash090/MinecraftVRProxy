@@ -69,7 +69,7 @@ class CommandHandler {
                     var leftHand = vrTrackers.lefthand;
                     var rightHand = vrTrackers.righthand;
 
-                    headCube.cframe = new CFrame(head.position.x, head.position.y, head.position.z).multiply(CFAngles(toRadians(head.rotation.x), toRadians(head.rotation.y), toRadians(head.rotation.z)));
+                    headCube.cframe = new CFrame(head.position.x, head.position.y, head.position.z).multiply(CFAngles(toRadians(-head.rotation.x), toRadians(-head.rotation.y), toRadians(-head.rotation.z)));
                     JSONSender.sendCommand(client, `/particle minecraft:balloon_gas_particle ${leftHand.position.x} ${leftHand.position.y} ${leftHand.position.z}`);
                     JSONSender.sendCommand(client, `/particle minecraft:balloon_gas_particle ${rightHand.position.x} ${rightHand.position.y} ${rightHand.position.z}`);
 
