@@ -54,14 +54,14 @@ class CommandHandler {
 
             start: (sender, args) => {
                 var headCube = new Cube(client);
-                headCube.Size = new Vec3(1,1,1);
+                headCube.Size = new Vec3(0.5, 0.5, 0.5);
                 
                 server.websocket.on("VRTrackingData", (vrTrackers) => {
                     var head = vrTrackers.head;
                     var leftHand = vrTrackers.lefthand;
                     var rightHand = vrTrackers.righthand;
 
-                    headCube.cframe = new CFrame(head.position.x, head.position.y, head.position.z).multiply(CFAngles(head.rotation.x, head.rotation.y, head.rotation.z));
+                    headCube.cframe = new CFrame(head.position.x, head.position.y, head.position.z)//.multiply(CFAngles(head.rotation.x, head.rotation.y, head.rotation.z));
                     JSONSender.sendCommand(client, `/particle minecraft:balloon_gas_particle ${leftHand.position.x} ${leftHand.position.y} ${leftHand.position.z}`);
                     JSONSender.sendCommand(client, `/particle minecraft:balloon_gas_particle ${rightHand.position.x} ${rightHand.position.y} ${rightHand.position.z}`);
 
