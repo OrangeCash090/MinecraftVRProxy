@@ -51,7 +51,7 @@ class CommandHandler {
             },
 
             start: (sender, args) => {
-                server.on("VRTrackingData", (vrTrackers) => {
+                server.websocket.on("VRTrackingData", (vrTrackers) => {
                     console.log("ayy");
                     var head = vrTrackers.head;
                     var leftHand = vrTrackers.lefthand;
