@@ -83,10 +83,16 @@ class CommandHandler {
                     rightCube.update();
 
                     var currentPlayers = await PlayerHandler.onlinePlayers(ws);
+                    var playerTransforms = {};
+                    
+                    for (let [name, player] of Object.entries(this.currentPlayers)) {
+                        var transform = await player.getTransform();
+                        playerTransforms[player.username] = transform;
+                    }
                     
                     server.vrSocket.send(JSON.stringify({
-                        
-                    }))
+                        playerTransforms: playerTransforms
+                    }));
                 });
             }
         }
