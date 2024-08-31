@@ -83,7 +83,7 @@ class CommandHandler {
                     leftCube.update();
                     rightCube.update();
 
-                    var currentPlayers = await PlayerHandler.onlinePlayers(ws);
+                    var currentPlayers = await PlayerHandler.onlinePlayers(client);
                     var playerTransforms = {};
                     
                     for (let [name, player] of Object.entries(this.currentPlayers)) {
