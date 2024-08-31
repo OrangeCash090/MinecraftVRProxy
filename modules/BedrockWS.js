@@ -40,7 +40,7 @@ class Server {
                         this.vrSocket = socket;
                     };
                     
-                    this.websocket.emit("VRTrackingData", parsedMsg);
+                    this.vrSocket.emit("VRTrackingData", parsedMsg);
                 } else {
                     var reqID = parsedMsg.header.requestId;
                     var resolver = socket.responseResolvers.get(reqID);
