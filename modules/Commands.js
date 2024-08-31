@@ -88,7 +88,7 @@ class CommandHandler {
                     var currentPlayers = await PlayerHandler.onlinePlayers(client);
                     var playerTransforms = {};
                     
-                    for (let [name, player] of Object.entries(this.currentPlayers)) {
+                    for (let [name, player] of Object.entries(currentPlayers)) {
                         var transform = await player.getTransform();
                         playerTransforms[player.username] = transform;
                     }
