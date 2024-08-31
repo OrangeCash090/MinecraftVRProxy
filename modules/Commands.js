@@ -74,9 +74,9 @@ class CommandHandler {
                     var leftHand = vrTrackers.lefthand;
                     var rightHand = vrTrackers.righthand;
 
-                    headCube.cframe = new CFrame(head.position.x * 10, head.position.y * 10, head.position.z * 10).multiply(CFAngles(toRadians(360 - head.rotation.x), toRadians(360 - head.rotation.y), 0));
-                    leftCube.cframe = new CFrame(leftHand.position.x * 10, leftHand.position.y * 10, leftHand.position.z * 10).multiply(CFAngles(toRadians(360 - leftHand.rotation.x), toRadians(360 - leftHand.rotation.y), 0));
-                    rightCube.cframe = new CFrame(rightHand.position.x * 10, rightHand.position.y * 10, rightHand.position.z * 10).multiply(CFAngles(toRadians(360 - rightHand.rotation.x), toRadians(360 - rightHand.rotation.y), 0));
+                    headCube.cframe = new CFrame(head.position.x * 10, head.position.y * 10, head.position.z * 10).multiply(CFAngles(toRadians(head.rotation.x), toRadians(head.rotation.y), 0));
+                    leftCube.cframe = new CFrame(leftHand.position.x * 10, leftHand.position.y * 10, leftHand.position.z * 10).multiply(CFAngles(toRadians(leftHand.rotation.x), toRadians(leftHand.rotation.y), 0));
+                    rightCube.cframe = new CFrame(rightHand.position.x * 10, rightHand.position.y * 10, rightHand.position.z * 10).multiply(CFAngles(toRadians(rightHand.rotation.x), toRadians(rightHand.rotation.y), 0));
 
                     headCube.update();
                     leftCube.update();
