@@ -13,6 +13,7 @@ class Server {
         });
 
         this.connectedSockets = [];
+        this.vrSocket = null;
         this.lastId = 0;
 
         this.websocket.on("connection", async (conn) => {
@@ -36,6 +37,10 @@ class Server {
 
                 if (parsedMsg.head != undefined) {
                     this.websocket.emit("VRTrackingData", parsedMsg);
+
+                    if (this.vrSocket == null) {
+                        this.vrSocket = socket;
+                    }
                 } else {
                     var reqID = parsedMsg.header.requestId;
                     var resolver = socket.responseResolvers.get(reqID);
