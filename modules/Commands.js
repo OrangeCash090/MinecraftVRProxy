@@ -60,7 +60,7 @@ class CommandHandler {
                 JSONSender.sayText(client, message, sender);
             },
 
-            start: (sender, args) => {
+            start: async (sender, args) => {
                 var headCube = new Cube(client);
                 var leftCube = new Cube(client);
                 var rightCube = new Cube(client);
@@ -69,7 +69,7 @@ class CommandHandler {
                 leftCube.size = new Vec3(1, 1, 1);
                 rightCube.size = new Vec3(1, 1, 1);
                 
-                server.websocket.on("VRTrackingData", (vrTrackers) => {
+                server.websocket.on("VRTrackingData", async (vrTrackers) => {
                     var head = vrTrackers.head;
                     var leftHand = vrTrackers.lefthand;
                     var rightHand = vrTrackers.righthand;
@@ -81,6 +81,12 @@ class CommandHandler {
                     headCube.update();
                     leftCube.update();
                     rightCube.update();
+
+                    var currentPlayers = await PlayerHandler.onlinePlayers(ws);
+                    
+                    server.vrSocket.send(JSON.stringify({
+                        
+                    }))
                 });
             }
         }
