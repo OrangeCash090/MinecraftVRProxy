@@ -1,4 +1,5 @@
 const JSONSender = require("./JSONSender");
+const PlayerHandler = require("./PlayerHandler");
 const { CFrame, CFAngles } = require("./CFrame");
 const {Mesh, Cube} = require("./Mesh");
 const { Vec3 } = require("vec3");
