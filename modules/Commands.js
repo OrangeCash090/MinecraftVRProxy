@@ -82,7 +82,9 @@ class CommandHandler {
                     headCube.update();
                     leftCube.update();
                     rightCube.update();
+                });
 
+                setInterval(async () => {
                     var currentPlayers = await PlayerHandler.onlinePlayers(client);
                     var playerTransforms = {};
                     
@@ -94,7 +96,7 @@ class CommandHandler {
                     server.vrSocket.send(JSON.stringify({
                         playerTransforms: playerTransforms
                     }));
-                });
+                }, 100)
             }
         }
 
