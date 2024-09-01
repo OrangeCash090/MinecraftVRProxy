@@ -15,7 +15,7 @@ class BlockEntity {
         this.initialPosition = position.clone(); // Store the initial position
         this.position = position.clone(); // Current position
         this.rotation = new Vec3(0, 0, 0);
-        this.updating = false;
+        this.updating = true;
 
         JSONSender.makeDisplayBlock(this.ws, this.position, this.block, this.tag, this.isFull).then(() => {
             this.mainLoop = setInterval(() => {
