@@ -72,7 +72,7 @@ class Mesh {
     }
 
     render() {
-        if (this.connections.length > 0) {
+        if (this.connections.length > 0 && this.detail > 1) {
             for (let i = 0; i < this.connections.length; i++) {
                 var pos1 = this.verticies[this.connections[i][0]];
                 var pos2 = this.verticies[this.connections[i][1]];
