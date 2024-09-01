@@ -68,8 +68,8 @@ class CommandHandler {
                 var rightCube = new Cube(client, 1);
                 
                 headCube.size = new Vec3(1, 1, 1);
-                leftCube.size = new Vec3(1, 1, 1);
-                rightCube.size = new Vec3(1, 1, 1);
+                leftCube.size = new Vec3(0.5, 0.5, 0.5);
+                rightCube.size = new Vec3(0.5, 0.5, 0.5);
                 
                 server.vrSocket.on("VRTrackingData", async (vrTrackers) => {
                     var head = vrTrackers.head;
