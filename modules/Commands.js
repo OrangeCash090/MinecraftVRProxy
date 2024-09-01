@@ -63,24 +63,26 @@ class CommandHandler {
             },
 
             start: async (sender, args) => {
-                var headCube = new Cube(client);
-                headCube.size = new Vec3(2, 2, 2);
+                var headCube = new Cube(client, 1);
+                var leftCube = new Cube(client, 1);
+                var rightCube = new Cube(client, 1);
                 
-                var leftCube = new BlockEntity(client, "gold_block", "LC", new Vec3(10,10,10));
-                await new Promise(resolve => setTimeout(resolve, 2000));
-                var rightCube = new BlockEntity(client, "gold_block", "RC", new Vec3(-10,-10,-10));
-                await new Promise(resolve => setTimeout(resolve, 2000));
+                headCube.size = new Vec3(1, 1, 1);
+                leftCube.size = new Vec3(1, 1, 1);
+                rightCube.size = new Vec3(1, 1, 1);
                 
                 server.vrSocket.on("VRTrackingData", async (vrTrackers) => {
                     var head = vrTrackers.head;
                     var leftHand = vrTrackers.lefthand;
                     var rightHand = vrTrackers.righthand;
 
-                    headCube.cframe = new CFrame(head.position.x * 10, head.position.y * 10, head.position.z * 10).multiply(CFAngles(toRadians(head.rotation.x), toRadians(head.rotation.y), 0));
-                    leftCube.position = new Vec3(leftHand.position.x * 10, leftHand.position.y * 10, leftHand.position.z * 10);
-                    rightCube.position = new Vec3(rightHand.position.x * 10, rightHand.position.y * 10, rightHand.position.z * 10);
+                    headCube.cframe = new CFrame(head.position.x * 2, head.position.y * 2, head.position.z * 2).multiply(CFAngles(toRadians(head.rotation.x), toRadians(head.rotation.y), 0));
+                    leftCube.cframe = new CFrame(leftHand.position.x * 2, leftHand.position.y * 2, leftHand.position.z * 2).multiply(CFAngles(toRadians(leftHand.rotation.x), toRadians(leftHand.rotation.y), 0));
+                    rightCube.cframe = new CFrame(rightHand.position.x * 2, rightHand.position.y * 2, rightHand.position.z * 2).multiply(CFAngles(toRadians(rightHand.rotation.x), toRadians(rightHand.rotation.y), 0));
 
                     headCube.update();
+                    leftCube.update();
+                    rightCube.update();
                 });
 
                 setInterval(async () => {
