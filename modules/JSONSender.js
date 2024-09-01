@@ -279,4 +279,49 @@ async function raycastBlock(ws, origin, direction, range=5) {
     });
 }
 
-module.exports = { sendCommand, commandWithResponse, sendSubscribe, subscribeAll, sayText, sendTitle, queryTarget, getBlock, getChunk, raycastBlock }
+async function makeDisplayBlock(ws, pos, block, id, full = true) {
+    return new Promise(async (resolve, reject) => {
+        var commands;
+
+        if (full) {
+            commands = [
+                `/summon armor_stand Grumm ${pos.x} ${pos.y} ${pos.z}`,
+                `/tag @e[type=armor_stand,name=Grumm,tag=!"set",c=1] add "${id}"`,
+                `/tag @e[type=armor_stand,name=Grumm,tag=!"set",c=1] add set`,
+                `/execute as @e[tag="${id}"] at @s run tp @s ~~~ 260`,
+                `/effect @e[tag="${id}"] invisibility 999999 255 true`,
+                `/replaceitem entity @e[tag="${id}"] slot.weapon.mainhand 0 ${block}`,
+                `/playanimation @e[tag="${id}"] animation.armor_stand.entertain_pose null 0 "0" align.arms`,
+                `/playanimation @e[tag="${id}"] animation.player.move.arms.zombie null 0 "0" size.mini_block`,
+                `/playanimation @e[tag="${id}"] animation.ghast.scale null 0 "0" size.full_block`,
+                `/playanimation @e[tag="${id}"] animation.fireworks_rocket.move null 0 "0" align.full_block`,
+                `/execute as @e[tag="${id}"] at @s run tp ~~~`
+            ];
+        } else {
+            commands = [
+                `/summon armor_stand Grumm ${pos.x} ${pos.y} ${pos.z}`,
+                `/tag @e[type=armor_stand,name=Grumm,tag=!"set",c=1] add "${id}"`,
+                `/tag @e[type=armor_stand,name=Grumm,tag=!"set",c=1] add set`,
+                `/execute as @e[tag="${id}"] at @s run tp @s ~~~ 260`,
+                `/effect @e[tag="${id}"] invisibility 999999 255 true`,
+                `/replaceitem entity @e[tag="${id}"] slot.weapon.mainhand 0 ${block}`,
+                `/playanimation @e[tag="${id}"] animation.armor_stand.entertain_pose null 0 "0" align.arms`,
+                `/playanimation @e[tag="${id}"] animation.player.move.arms.zombie null 0 "0" size.mini_block`,
+                `/execute as @e[tag="${id}"] at @s run tp ~~~`
+            ];
+        }
+
+        await (async function cmdLoop(i) {
+            setTimeout(async () => {
+                await commandWithResponse(ws, commands[commands.length - i]);
+                if (--i) {
+                    cmdLoop(i)
+                } else {
+                    resolve("Finished.");
+                }
+            }, 20)
+        })(commands.length);
+    })
+}
+
+module.exports = { sendCommand, commandWithResponse, sendSubscribe, subscribeAll, sayText, sendTitle, queryTarget, getBlock, getChunk, raycastBlock, makeDisplayBlock }
