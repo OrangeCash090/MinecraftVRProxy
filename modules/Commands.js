@@ -66,9 +66,9 @@ class CommandHandler {
                 var headCube = new Cube(client);
                 headCube.size = new Vec3(2, 2, 2);
                 
-                var leftCube = new BlockEntity(client, "gold_block", "LC", new Vec3(0,0,0));
+                var leftCube = new BlockEntity(client, "gold_block", "LC", new Vec3(10,10,10));
                 await new Promise(resolve => setTimeout(resolve, 2000));
-                var rightCube = new BlockEntity(client, "gold_block", "RC", new Vec3(0,0,0));
+                var rightCube = new BlockEntity(client, "gold_block", "RC", new Vec3(-10,-10,-10));
                 await new Promise(resolve => setTimeout(resolve, 2000));
                 
                 server.vrSocket.on("VRTrackingData", async (vrTrackers) => {
