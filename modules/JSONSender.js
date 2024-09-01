@@ -176,10 +176,6 @@ async function queryTarget(ws, target, extra) {
             sendCommand(ws, `/execute at ${target} run summon armor_stand ${tag} ^ ^+1.62 ^+10`);
             sendCommand(ws, `/effect @e[name="${tag}"] invisibility 99999 255 true`);
 
-            var loop = setInterval(() => {
-                sendCommand(ws, `/execute at ${target} run tp @e[name="${tag}"] ^ ^+1.62 ^+10`);
-            }, 20);
-
             await queryTarget(ws, `@e[name="${tag}"]`).then(async (properties) => {
                 sendCommand(ws, `/kill @e[name="${tag}"]`);
 
@@ -196,8 +192,6 @@ async function queryTarget(ws, target, extra) {
                     data.xRot = (pitch * 180) / Math.PI
                     data.lookVector = new Vec3(-(Math.cos(pitch) * Math.sin(toRadians(data.yRot))), Math.sin(pitch), Math.cos(pitch) * Math.cos(toRadians(data.yRot)));
                 }
-
-                clearInterval(loop);
             })
         }
     }
