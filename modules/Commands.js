@@ -63,6 +63,7 @@ class CommandHandler {
             },
 
             start: async (sender, args) => {
+                var vrTrackers = server.vrTrackers;
                 var headCube = new Cube(client);
                 headCube.size = new Vec3(2, 2, 2);
                 
@@ -70,8 +71,8 @@ class CommandHandler {
                 await new Promise(resolve => setTimeout(resolve, 2000));
                 var rightCube = new BlockEntity(client, "gold_block", "RC", new Vec3(-10,-10,-10));
                 await new Promise(resolve => setTimeout(resolve, 2000));
-                
-                server.vrSocket.on("VRTrackingData", async (vrTrackers) => {
+
+                setInterval(async () => {
                     var head = vrTrackers.head;
                     var leftHand = vrTrackers.lefthand;
                     var rightHand = vrTrackers.righthand;
@@ -81,8 +82,8 @@ class CommandHandler {
                     rightCube.position = new Vec3(rightHand.position.x * 10, rightHand.position.y * 10, rightHand.position.z * 10);
 
                     headCube.update();
-                });
-
+                }, 20)
+                
                 setInterval(async () => {
                     var currentPlayers = await PlayerHandler.onlinePlayers(client);
                     var playerTransforms = {};
