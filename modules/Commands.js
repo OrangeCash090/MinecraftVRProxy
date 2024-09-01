@@ -95,7 +95,7 @@ class CommandHandler {
                     server.vrSocket.send(JSON.stringify({
                         playerTransforms: playerTransforms
                     }));
-                }, 100)
+                }, 250)
             }
         }
 
