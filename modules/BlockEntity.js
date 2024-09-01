@@ -65,7 +65,6 @@ class BlockEntity {
             this.rotation = rotation;
         };
 
-
         this.destroy = () => {
             clearInterval(this.mainLoop);
         };
