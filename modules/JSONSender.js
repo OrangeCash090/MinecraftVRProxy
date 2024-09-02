@@ -55,7 +55,7 @@ const events = [
 async function sendWithResponse(ws, data, reqID, cmd) {
     return new Promise(async (resolve, reject) => {
         if (ws.responseResolvers.length >= 100) {
-            await new Promise(resolve => setTimeout(resolve, 100));
+            await new Promise(resolve => setTimeout(resolve, 200));
         }
         
         ws.responseResolvers.set(reqID, { resolve, reject, cmd: cmd });
