@@ -47,11 +47,11 @@ class Server {
 
                     if (resolver) {
                         if (parsedMsg.header.messagePurpose == "error") {
-                            //console.log(socket.responseResolvers.size);
-                            //console.log(`Command dropped: ${resolver.cmd}`);
+                            resolver.resolve("");
+                        } else {
+                            resolver.resolve(parsedMsg);
                         }
 
-                        resolver.resolve(parsedMsg);
                         socket.responseResolvers.delete(reqID);
                     }
 
