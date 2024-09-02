@@ -53,7 +53,11 @@ const events = [
 ]
 
 async function sendWithResponse(ws, data, reqID, cmd) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
+        if (ws.responseResolvers.length >= 100) {
+            await new Promise(resolve => setTimeout(resolve, 100));
+        }
+        
         ws.responseResolvers.set(reqID, { resolve, reject, cmd: cmd });
 
         ws.send(data, (error) => {
@@ -66,10 +70,12 @@ async function sendWithResponse(ws, data, reqID, cmd) {
 }
 
 function sendCommand(ws, cmd) {
-    ws.send(JSON.stringify({
+    var reqID = uuid4();
+    
+    sendWithResponse(ws, JSON.stringify({
         header: {
             version: 1,
-            requestId: uuid4(),
+            requestId: reqID,
             messageType: "commandRequest",
             messagePurpose: "commandRequest"
         },
@@ -80,12 +86,11 @@ function sendCommand(ws, cmd) {
                 type: "server"
             }
         }
-    }))
+    }), reqID, cmd)
 }
 
 async function commandWithResponse(ws, cmd) {
     var reqID = uuid4();
-
     var response = await sendWithResponse(ws, JSON.stringify({
         header: {
             version: 1,
