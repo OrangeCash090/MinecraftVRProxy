@@ -47,7 +47,7 @@ class Server {
 
                     if (resolver) {
                         if (parsedMsg.header.messagePurpose == "error") {
-                            parsedMsg.statusMessage = "";
+                            //console.log(parsedMsg);
                         }
 
                         resolver.resolve(parsedMsg);
