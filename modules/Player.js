@@ -87,11 +87,6 @@ class Player {
                     position: data.position,
                     rotation: new Vec3(0, data.yRot, 0)
                 }
-            } else {
-                return {
-                    position: new Vec3(0,0,0),
-                    rotation: new Vec3(0,0,0)
-                }
             };
         }
 
