@@ -4,6 +4,14 @@ const { CFrame, CFAngles } = require("./CFrame");
 const {Mesh, Cube} = require("./Mesh");
 const { Vec3 } = require("vec3");
 
+function toRadians(angle) {
+    return angle * (Math.PI / 180);
+}
+
+function toDegrees(angle) {
+    return angle * (180 / Math.PI);
+}
+
 class VRHandler {
     constructor (ws, vrSocket) {
         this.loadingWorld = false;
