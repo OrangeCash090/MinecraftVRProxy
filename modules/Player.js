@@ -80,12 +80,12 @@ class Player {
         }
 
         this.getTransform = async () => {
-            var data = await JSONSender.queryTarget(ws, this.username, true);
+            var data = await JSONSender.queryTarget(ws, this.username);
 
             if (data.id) {
                 return {
                     position: data.position,
-                    rotation: new Vec3(data.xRot, data.yRot, 0)
+                    rotation: new Vec3(0, data.yRot, 0)
                 }
             }
         }
