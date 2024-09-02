@@ -209,48 +209,6 @@ async function getBlock(ws, pos) {
     })
 }
 
-async function getChunk(ws, pos) {
-    return new Promise((resolve, reject) => {
-        var blocks = [];
-        var coords = [];
-    
-        var start = new Vec3(Math.floor(pos.x / 16) * 16, Math.floor(pos.y / 16) * 16, Math.floor(pos.z / 16) * 16);
-        var end = new Vec3(start.x + 15, start.y + 15, start.z + 15);
-    
-        // Collect all coordinates
-        for (let x = start.x; x <= end.x; x++) {
-            for (let y = start.y; y <= end.y; y++) {
-                for (let z = start.z; z <= end.z; z++) {
-                    coords.push(new Vec3(x, y, z));
-                }
-            }
-        }
-    
-        var batchSize = 99; // Number of blocks to place in each batch
-        var currentIndex = 0;
-    
-        function placeBlocksBatch(blockArray) {
-            var batchEndIndex = Math.min(currentIndex + batchSize, blockArray.length);
-    
-            for (let i = currentIndex; i < batchEndIndex; i++) {
-                blocks.push(getBlock(ws, coords[i]));
-            }
-    
-            currentIndex = batchEndIndex;
-            
-            if (currentIndex < blockArray.length) {
-                setTimeout(placeBlocksBatch, 20, blockArray);
-            } else {
-                setTimeout(() => {
-                    resolve(blocks);
-                }, 20);
-            }
-        }
-    
-        placeBlocksBatch(coords);
-    })
-}
-
 async function getArea(ws, start, end) {
     return new Promise(async (resolve, reject) => {
         var blocks = [];
@@ -281,6 +239,13 @@ async function getArea(ws, start, end) {
             await new Promise(resolve => setTimeout(resolve, 50));
         }
     })
+}
+
+async function getChunk(ws, pos) {
+    var start = new Vec3(Math.floor(pos.x / 16) * 16, Math.floor(pos.y / 16) * 16, Math.floor(pos.z / 16) * 16);
+    var end = new Vec3(start.x + 15, start.y + 15, start.z + 15);
+    
+    return await getArea(ws, start, end);
 }
 
 async function raycastBlock(ws, origin, direction, range=5) {
