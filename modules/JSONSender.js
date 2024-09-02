@@ -56,7 +56,7 @@ async function sendWithResponse(ws, data, reqID, cmd) {
     return new Promise(async (resolve, reject) => {
         var timeOut = 0;
         
-        if (ws.responseResolvers.size >= 100) {
+        if (Object.keys(ws.responseResolvers).length >= 100) {
             timeOut = 100;
         }
 
