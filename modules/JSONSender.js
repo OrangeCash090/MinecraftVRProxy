@@ -54,18 +54,22 @@ const events = [
 
 async function sendWithResponse(ws, data, reqID, cmd) {
     return new Promise(async (resolve, reject) => {
-        if (ws.responseResolvers.length >= 100) {
-            await new Promise(resolve => setTimeout(resolve, 200));
-        }
+        var timeOut = 0;
         
-        ws.responseResolvers.set(reqID, { resolve, reject, cmd: cmd });
+        if (ws.responseResolvers.length >= 100) {
+            timeOut = 100;
+        }
 
-        ws.send(data, (error) => {
-            if (error) {
-                ws.responseResolvers.delete(reqID); // Clean up on error
-                reject(error);
-            }
-        });
+        setTimeout(() => {
+            ws.responseResolvers.set(reqID, { resolve, reject, cmd: cmd });
+
+            ws.send(data, (error) => {
+                if (error) {
+                    ws.responseResolvers.delete(reqID); // Clean up on error
+                    reject(error);
+                }
+            });
+        }, timeOut);
     });
 }
 
