@@ -1,4 +1,5 @@
 const JSONSender = require("./JSONSender");
+const VRHandler = require("./VRHandler");
 const { Vec3 } = require("vec3");
 
 var currentAnimation = null;
@@ -59,7 +60,7 @@ class CommandHandler {
             },
 
             start: async (sender, args) => {
-                
+                new VRHandler(client, server.vrSocket);
             }
         }
 
