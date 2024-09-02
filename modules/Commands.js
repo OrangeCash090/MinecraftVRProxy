@@ -84,7 +84,7 @@ class CommandHandler {
                     leftCube.update();
                     rightCube.update();
 
-                    await new Promise(resolve => setTimeout(resolve, 20));
+                    await new Promise(resolve => setTimeout(resolve, 50));
 
                     var currentPlayers = await PlayerHandler.onlinePlayers(client);
                     var playerTransforms = {};
