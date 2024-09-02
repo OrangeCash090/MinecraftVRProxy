@@ -63,7 +63,7 @@ class CommandHandler {
             },
 
             start: async (sender, args) => {
-                var headCube = new Cube(client, 1);
+                var headCube = new Cube(client, 3);
                 var leftCube = new Cube(client, 1);
                 var rightCube = new Cube(client, 1);
                 
@@ -76,9 +76,9 @@ class CommandHandler {
                     var leftHand = vrTrackers.lefthand;
                     var rightHand = vrTrackers.righthand;
 
-                    headCube.cframe = new CFrame(head.position.x * 2, head.position.y * 2, head.position.z * 2).multiply(CFAngles(toRadians(head.rotation.x), toRadians(head.rotation.y), 0));
-                    leftCube.cframe = new CFrame(leftHand.position.x * 2, leftHand.position.y * 2, leftHand.position.z * 2).multiply(CFAngles(toRadians(leftHand.rotation.x), toRadians(leftHand.rotation.y), 0));
-                    rightCube.cframe = new CFrame(rightHand.position.x * 2, rightHand.position.y * 2, rightHand.position.z * 2).multiply(CFAngles(toRadians(rightHand.rotation.x), toRadians(rightHand.rotation.y), 0));
+                    headCube.cframe = new CFrame(head.position.x * 4, head.position.y * 4, head.position.z * 4).multiply(CFAngles(toRadians(head.rotation.x), toRadians(head.rotation.y), 0));
+                    leftCube.cframe = new CFrame(leftHand.position.x * 4, leftHand.position.y * 4, leftHand.position.z * 4).multiply(CFAngles(toRadians(leftHand.rotation.x), toRadians(leftHand.rotation.y), 0));
+                    rightCube.cframe = new CFrame(rightHand.position.x * 4, rightHand.position.y * 4, rightHand.position.z * 4).multiply(CFAngles(toRadians(rightHand.rotation.x), toRadians(rightHand.rotation.y), 0));
 
                     headCube.update();
                     leftCube.update();
