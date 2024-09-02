@@ -47,11 +47,10 @@ class Server {
 
                     if (resolver) {
                         if (parsedMsg.header.messagePurpose == "error") {
-                            resolver.resolve("");
-                        } else {
-                            resolver.resolve(parsedMsg);
+                            parsedMsg.statusMessage = "";
                         }
 
+                        resolver.resolve(parsedMsg);
                         socket.responseResolvers.delete(reqID);
                     }
 
