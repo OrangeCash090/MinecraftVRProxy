@@ -83,9 +83,9 @@ class CommandHandler {
                     headCube.update();
                     leftCube.update();
                     rightCube.update();
-                });
 
-                setInterval(async () => {
+                    await new Promise(resolve => setTimeout(resolve, 100));
+
                     var currentPlayers = await PlayerHandler.onlinePlayers(client);
                     var playerTransforms = {};
                     
@@ -97,7 +97,7 @@ class CommandHandler {
                     server.vrSocket.send(JSON.stringify({
                         playerTransforms: playerTransforms
                     }));
-                }, 100)
+                });
             }
         }
 
