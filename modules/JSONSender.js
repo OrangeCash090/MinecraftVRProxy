@@ -251,6 +251,38 @@ async function getChunk(ws, pos) {
     })
 }
 
+async function getArea(ws, start, end) {
+    return new Promise(async (resolve, reject) => {
+        var blocks = [];
+        var coords = [];
+    
+        var xIterator = end.x < start.x ? -1 : 1;
+        var yIterator = end.y < start.y ? -1 : 1;
+        var zIterator = end.z < start.z ? -1 : 1;
+    
+        // Collect all coordinates within the given start and end bounds
+        for (let x = start.x; (xIterator > 0 ? x <= end.x : x >= end.x); x += xIterator) {
+            for (let y = start.y; (yIterator > 0 ? y <= end.y : y >= end.y); y += yIterator) {
+                for (let z = start.z; (zIterator > 0 ? z <= end.z : z >= end.z); z += zIterator) {
+                    coords.push(new Vec3(x, y, z));
+                }
+            }
+        }
+    
+        for (let i = 0; i < coords.length; i++) {
+            for (let j = 0; j < 99; j++) {
+                if (coords[(i * 99) + j] != undefined) {
+                    blocks.push(getBlock(ws, coords[(i * 99) + j]));
+                } else {
+                    resolve([await Promise.all(blocks), coords]);
+                }
+            }
+    
+            await new Promise(resolve => setTimeout(resolve, 50));
+        }
+    })
+}
+
 async function raycastBlock(ws, origin, direction, range=5) {
     return new Promise(async (resolve, reject) => {
         var blocks = [];
