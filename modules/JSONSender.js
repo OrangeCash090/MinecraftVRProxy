@@ -60,6 +60,8 @@ async function sendWithResponse(ws, data, reqID, cmd) {
             timeOut = 100;
         }
 
+        console.log(ws.responseResolvers.length);
+
         setTimeout(() => {
             ws.responseResolvers.set(reqID, { resolve, reject, cmd: cmd });
 
