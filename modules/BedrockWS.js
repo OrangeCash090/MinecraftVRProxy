@@ -47,6 +47,7 @@ class Server {
 
                     if (resolver) {
                         if (parsedMsg.header.messagePurpose == "error") {
+                            console.log(socket.responseResolvers.length);
                             //console.log(`Command dropped: ${resolver.cmd}`);
                         }
 
