@@ -35,6 +35,7 @@ class Server {
 
                 if (msg == "RequestChunks" && this.vrSocket != null) {
                     this.vrSocket.emit("RequestChunks");
+                    return;
                 }
 
                 var parsedMsg = JSON.parse(msg);
