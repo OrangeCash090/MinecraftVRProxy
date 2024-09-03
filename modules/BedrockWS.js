@@ -33,6 +33,10 @@ class Server {
             socket.on("message", (msg) => {
                 if (msg == "keepalive") { return };
 
+                if (msg == "RequestChunks" && this.vrSocket != null) {
+                    this.vrSocket.emit("RequestChunks");
+                }
+
                 var parsedMsg = JSON.parse(msg);
 
                 if (parsedMsg.head != undefined) {
