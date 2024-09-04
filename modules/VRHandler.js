@@ -79,6 +79,28 @@ class VRHandler {
                 }));
             }
         }, 150)
+
+        setTimeout(() => {
+                        if (!this.loadingWorld) {
+                var data = [];
+
+                this.loadingWorld = true;
+                this.trackingPlayers = false;
+                this.rendering = false;
+
+                await new Promise(resolve => setTimeout(resolve, 100));
+                data = await JSONSender.getChunk(ws, this.headCube.cframe.position);
+                await new Promise(resolve => setTimeout(resolve, 100));
+
+                this.loadingWorld = false;
+                this.trackingPlayers = true;
+                this.rendering = true;
+
+                vrSocket.send(JSON.stringify({
+                    blockCoords: data
+                }));
+            }
+        }, 3000)
     }
 }
 
