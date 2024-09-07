@@ -96,6 +96,7 @@ class VRHandler {
                 this.trackingPlayers = true;
                 this.rendering = true;
 
+                console.log(data);
                 vrSocket.send(JSON.stringify({
                     blockCoords: data
                 }));
