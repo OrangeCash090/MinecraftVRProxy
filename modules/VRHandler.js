@@ -81,7 +81,7 @@ class VRHandler {
         }, 150)
 
         setTimeout(async () => {
-                        if (!this.loadingWorld) {
+            if (!this.loadingWorld) {
                 var data = [];
 
                 this.loadingWorld = true;
