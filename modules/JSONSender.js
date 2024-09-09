@@ -236,7 +236,7 @@ async function getArea(ws, start, end) {
                 }
             }
     
-            await new Promise(resolve => setTimeout(resolve, 50));
+            await new Promise(resolve => setTimeout(resolve, 100));
         }
     })
 }
