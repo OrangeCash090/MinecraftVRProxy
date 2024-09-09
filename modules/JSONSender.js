@@ -228,9 +228,9 @@ async function getArea(ws, start, end) {
         }
     
         for (let i = 0; i < coords.length; i++) {
-            for (let j = 0; j < 90; j++) {
-                if (coords[(i * 90) + j] != undefined) {
-                    blocks.push(getBlock(ws, coords[(i * 90) + j]));
+            for (let j = 0; j < 99; j++) {
+                if (coords[(i * 99) + j] != undefined) {
+                    blocks.push(getBlock(ws, coords[(i * 99) + j]));
                 } else {
                     resolve([await Promise.all(blocks), coords]);
                 }
