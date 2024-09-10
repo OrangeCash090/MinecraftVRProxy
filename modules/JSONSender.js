@@ -125,68 +125,6 @@ function subscribeAll(ws) {
     }
 }
 
-class CommandQueue {
-    constructor(maxConcurrent = 99) {
-        this.queue = []; // To store queued commands
-        this.currentlyRunning = 0; // Track how many commands are currently executing
-        this.maxConcurrent = maxConcurrent; // Max number of concurrent commands
-    }
-
-    async queueCommand(ws, cmd) {
-        return new Promise((resolve, reject) => {
-            // Add the command to the queue with its resolve/reject handlers
-            this.queue.push({ ws, cmd, resolve, reject });
-
-            // Try to execute the next command if possible
-            this.processQueue();
-        });
-    }
-
-    async processQueue() {
-        // Check if we can run more commands (limit is 100 concurrent)
-        while (this.currentlyRunning < this.maxConcurrent && this.queue.length > 0) {
-            // Take the next command from the queue
-            const { ws, cmd, resolve, reject } = this.queue.shift();
-            
-            // Increment the count of currently running commands
-            this.currentlyRunning++;
-
-            // Execute the command with response handling
-            this.executeCommand(ws, cmd)
-                .then(resolve)
-                .catch(reject)
-                .finally(() => {
-                    // After execution, decrement the count and try to run the next command
-                    this.currentlyRunning--;
-                    this.processQueue(); // Continue processing the next command in the queue
-                });
-        }
-    }
-
-    async executeCommand(ws, cmd) {
-        // This is similar to your commandWithResponse function
-        var reqID = uuid4();
-
-        return await sendWithResponse(ws, JSON.stringify({
-            header: {
-                version: 1,
-                requestId: reqID,
-                messageType: "commandRequest",
-                messagePurpose: "commandRequest"
-            },
-            body: {
-                version: 70,
-                commandLine: cmd,
-                origin: {
-                    type: "server"
-                }
-            }
-        }), reqID, cmd);
-    }
-}
-
-const commandQueue = new CommandQueue(99);
-
 function sayText(ws, text, player = "@a", messageType) {
     var messageSound = "";
 
@@ -272,37 +210,40 @@ async function getBlock(ws, pos) {
 }
 
 async function getArea(ws, start, end) {
-    let blocks = new Map();
-    let coords = [];
-
-    let xIterator = end.x < start.x ? -1 : 1;
-    let yIterator = end.y < start.y ? -1 : 1;
-    let zIterator = end.z < start.z ? -1 : 1;
-
-    for (let x = start.x; (xIterator > 0 ? x <= end.x : x >= end.x); x += xIterator) {
-        for (let y = start.y; (yIterator > 0 ? y <= end.y : y >= end.y); y += yIterator) {
-            for (let z = start.z; (zIterator > 0 ? z <= end.z : z >= end.z); z += zIterator) {
-                coords.push(new Vec3(x, y, z));
+    return new Promise(async (resolve, reject) => {
+        let blocks = new Map();  // Use a map to store blocks and their positions
+        let coords = [];
+    
+        let xIterator = end.x < start.x ? -1 : 1;
+        let yIterator = end.y < start.y ? -1 : 1;
+        let zIterator = end.z < start.z ? -1 : 1;
+    
+        for (let x = start.x; (xIterator > 0 ? x <= end.x : x >= end.x); x += xIterator) {
+            for (let y = start.y; (yIterator > 0 ? y <= end.y : y >= end.y); y += yIterator) {
+                for (let z = start.z; (zIterator > 0 ? z <= end.z : z >= end.z); z += zIterator) {
+                    coords.push(new Vec3(x, y, z));
+                }
             }
         }
-    }
 
-    for (let i = 0; i < coords.length; i++) {
-        commandQueue.queueCommand(ws, `/testforblock ${coords[i].x} ${coords[i].y} ${coords[i].z} structure_void`)
-            .then(response => {
-                let block = "minecraft:" + response.body.statusMessage.split(" is ")[1];
-                block = block.substring(0, block.indexOf(" (")).toLowerCase();
-                block = block.split(" ").join("_");
-
+        // Send all the commands without waiting for each one to finish
+        for (let i = 0; i < coords.length; i++) {
+            if (i % 90 == 0) {
+                await new Promise(resolve => setTimeout(resolve, 100));
+            }
+            
+            getBlock(ws, coords[i]).then(async block => {
                 blocks.set(`${coords[i].x},${coords[i].y},${coords[i].z}`, block);
-
-                // Check if all blocks have been processed
+                
+                // If all blocks have been received, resolve the promise
                 if (blocks.size === coords.length) {
                     resolve([Array.from(blocks.values()), coords]);
                 }
-            })
-            .catch(error => console.error("Error fetching block:", error));
-    }
+            }).catch(error => {
+                console.error(`Error fetching block at ${coords[i]}:`, error);
+            });
+        }
+    });
 }
 
 async function getChunk(ws, pos) {
