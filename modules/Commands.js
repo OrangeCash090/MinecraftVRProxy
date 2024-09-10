@@ -64,13 +64,8 @@ class CommandHandler {
             },
 
             test: async (sender, args) => {
-                var lastTime = Date.now();
-                
                 while (true) {
-                    await JSONSender.getChunk(client, new Vec3(0,0,0));
-                    console.log(Date.now() - lastTime);
-
-                    lastTime = Date.now();
+                    console.log((await JSONSender.getChunk(client, new Vec3(0,0,0)))[0]);
                     await new Promise(resolve => setTimeout(resolve, 1000));
                 }
             }
