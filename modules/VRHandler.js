@@ -52,7 +52,6 @@ class VRHandler {
 
                 await new Promise(resolve => setTimeout(resolve, 1000));
                 data = await JSONSender.getChunk(ws, this.headCube.cframe.position);
-                await new Promise(resolve => setTimeout(resolve, 1000));
 
                 this.loadingWorld = false;
                 this.trackingPlayers = true;
