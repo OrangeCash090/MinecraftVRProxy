@@ -61,6 +61,16 @@ class CommandHandler {
 
             start: async (sender, args) => {
                 new VRHandler(client, server.vrSocket);
+            },
+
+            test: async (sender, args) => {
+                var lastTime = Date.now();
+                
+                while (true) {
+                    await JSONSender.getChunk(client, new Vec3(0,0,0));
+                    console.log(Date.now() - lastTime);
+                    lastTime = Date.now();
+                }
             }
         }
 
