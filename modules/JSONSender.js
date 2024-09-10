@@ -232,7 +232,7 @@ async function getArea(ws, start, end) {
                 if (coords[(i * 90) + j] != undefined) {
                     blocks.push(getBlock(ws, coords[(i * 90) + j]));
                 } else {
-                    resolve([blocks, coords]);
+                    resolve([await Promise.all(blocks), coords]);
                 }
             }
     
