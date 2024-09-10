@@ -71,7 +71,7 @@ class CommandHandler {
                     console.log(Date.now() - lastTime);
 
                     lastTime = Date.now();
-                    await new Promise(resolve => setTimeout(resolve, 10000));
+                    await new Promise(resolve => setTimeout(resolve, 1000));
                 }
             }
         }
