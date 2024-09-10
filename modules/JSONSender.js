@@ -233,6 +233,7 @@ async function getArea(ws, start, end) {
                 
                 // If all blocks have been received, resolve the promise
                 if (blocks.size === coords.length) {
+                    await new Promise(resolve => setTimeout(resolve, 200));
                     resolve([Array.from(blocks.values()), coords]);
                 }
             }).catch(error => {
