@@ -228,7 +228,7 @@ async function getArea(ws, start, end) {
 
         // Send all the commands without waiting for each one to finish
         for (let i = 0; i < coords.length; i++) {
-            getBlock(ws, coords[i]).then(block => {
+            getBlock(ws, coords[i]).then(async block => {
                 blocks.set(`${coords[i].x},${coords[i].y},${coords[i].z}`, block);
                 
                 // If all blocks have been received, resolve the promise
