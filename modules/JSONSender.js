@@ -227,7 +227,7 @@ async function getArea(ws, start, end) {
         }
 
         // Process in controlled batches
-        let batchSize = 10; // Change batch size as needed
+        let batchSize = 90; // Change batch size as needed
         for (let i = 0; i < coords.length; i += batchSize) {
             let batch = coords.slice(i, i + batchSize);
             let blockPromises = batch.map(pos => getBlock(ws, pos));
@@ -236,7 +236,7 @@ async function getArea(ws, start, end) {
             let results = await Promise.all(blockPromises);
             blocks.push(...results);
     
-            //await new Promise(resolve => setTimeout(resolve, 50)); // Adjust this delay as needed
+            await new Promise(resolve => setTimeout(resolve, 50)); // Adjust this delay as needed
         }
     
         resolve([blocks, coords]);
