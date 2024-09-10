@@ -236,7 +236,7 @@ async function getArea(ws, start, end) {
             let results = await Promise.all(blockPromises);
             blocks.push(...results);
     
-            await new Promise(resolve => setTimeout(resolve, 50)); // Adjust this delay as needed
+            //await new Promise(resolve => setTimeout(resolve, 50)); // Adjust this delay as needed
         }
     
         resolve([blocks, coords]);
