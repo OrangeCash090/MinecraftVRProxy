@@ -218,7 +218,6 @@ async function getArea(ws, start, end) {
         var yIterator = end.y < start.y ? -1 : 1;
         var zIterator = end.z < start.z ? -1 : 1;
     
-        // Collect all coordinates within the given start and end bounds
         for (let x = start.x; (xIterator > 0 ? x <= end.x : x >= end.x); x += xIterator) {
             for (let y = start.y; (yIterator > 0 ? y <= end.y : y >= end.y); y += yIterator) {
                 for (let z = start.z; (zIterator > 0 ? z <= end.z : z >= end.z); z += zIterator) {
@@ -226,19 +225,22 @@ async function getArea(ws, start, end) {
                 }
             }
         }
+
+        // Process in controlled batches
+        let batchSize = 50; // Change batch size as needed
+        for (let i = 0; i < coords.length; i += batchSize) {
+            let batch = coords.slice(i, i + batchSize);
+            let blockPromises = batch.map(pos => getBlock(ws, pos));
+            
+            // Await the resolution of each batch before moving to the next
+            let results = await Promise.all(blockPromises);
+            blocks.push(...results);
     
-        for (let i = 0; i < coords.length; i++) {
-            for (let j = 0; j < 90; j++) {
-                if (coords[(i * 90) + j] != undefined) {
-                    blocks.push(getBlock(ws, coords[(i * 90) + j]));
-                } else {
-                    resolve([await Promise.all(blocks), coords]);
-                }
-            }
-    
-            await new Promise(resolve => setTimeout(resolve, 100));
+            await new Promise(resolve => setTimeout(resolve, 100)); // Adjust this delay as needed
         }
-    })
+    
+        resolve([blocks, coords]);
+    });
 }
 
 async function getChunk(ws, pos) {
