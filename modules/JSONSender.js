@@ -298,7 +298,7 @@ async function getArea(ws, start, end) {
 
                 // Check if all blocks have been processed
                 if (blocks.size === coords.length) {
-                    //console.log("All blocks have been retrieved.");
+                    resolve([Array.from(blocks.values()), coords]);
                 }
             })
             .catch(error => console.error("Error fetching block:", error));
