@@ -65,7 +65,7 @@ class CommandHandler {
 
             test: async (sender, args) => {
                 while (true) {
-                    console.log((await JSONSender.getChunk(client, new Vec3(0,0,0)))[0][0]);
+                    console.log((await JSONSender.getChunk(client, new Vec3(0,0,0)))[0][0].PromiseState);
                     await new Promise(resolve => setTimeout(resolve, 1000));
                 }
             }
