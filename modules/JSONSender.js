@@ -126,7 +126,7 @@ function subscribeAll(ws) {
 }
 
 class CommandQueue {
-    constructor(maxConcurrent = 100) {
+    constructor(maxConcurrent = 99) {
         this.queue = []; // To store queued commands
         this.currentlyRunning = 0; // Track how many commands are currently executing
         this.maxConcurrent = maxConcurrent; // Max number of concurrent commands
@@ -185,7 +185,7 @@ class CommandQueue {
     }
 }
 
-const commandQueue = new CommandQueue(100);
+const commandQueue = new CommandQueue(99);
 
 function sayText(ws, text, player = "@a", messageType) {
     var messageSound = "";
