@@ -69,6 +69,8 @@ class CommandHandler {
                 while (true) {
                     await JSONSender.getChunk(client, new Vec3(0,0,0));
                     console.log(Date.now() - lastTime);
+
+                    await new Promise(resolve => setTimeout(resolve, 3000));
                     lastTime = Date.now();
                 }
             }
