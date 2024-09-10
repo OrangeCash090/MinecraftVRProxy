@@ -211,12 +211,12 @@ async function getBlock(ws, pos) {
 
 async function getArea(ws, start, end) {
     return new Promise(async (resolve, reject) => {
-        var blocks = [];
-        var coords = [];
+        let blocks = new Map();  // Use a map to store blocks and their positions
+        let coords = [];
     
-        var xIterator = end.x < start.x ? -1 : 1;
-        var yIterator = end.y < start.y ? -1 : 1;
-        var zIterator = end.z < start.z ? -1 : 1;
+        let xIterator = end.x < start.x ? -1 : 1;
+        let yIterator = end.y < start.y ? -1 : 1;
+        let zIterator = end.z < start.z ? -1 : 1;
     
         for (let x = start.x; (xIterator > 0 ? x <= end.x : x >= end.x); x += xIterator) {
             for (let y = start.y; (yIterator > 0 ? y <= end.y : y >= end.y); y += yIterator) {
@@ -226,20 +226,19 @@ async function getArea(ws, start, end) {
             }
         }
 
-        // Process in controlled batches
-        let batchSize = 90; // Change batch size as needed
-        for (let i = 0; i < coords.length; i += batchSize) {
-            let batch = coords.slice(i, i + batchSize);
-            let blockPromises = batch.map(pos => getBlock(ws, pos));
-            
-            // Await the resolution of each batch before moving to the next
-            let results = await Promise.all(blockPromises);
-            blocks.push(...results);
-    
-            await new Promise(resolve => setTimeout(resolve, 50)); // Adjust this delay as needed
+        // Send all the commands without waiting for each one to finish
+        for (let i = 0; i < coords.length; i++) {
+            getBlock(ws, coords[i]).then(block => {
+                blocks.set(`${coords[i].x},${coords[i].y},${coords[i].z}`, block);
+                
+                // If all blocks have been received, resolve the promise
+                if (blocks.size === coords.length) {
+                    resolve([Array.from(blocks.values()), coords]);
+                }
+            }).catch(error => {
+                console.error(`Error fetching block at ${coords[i]}:`, error);
+            });
         }
-    
-        resolve([blocks, coords]);
     });
 }
 
