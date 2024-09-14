@@ -33,8 +33,8 @@ class Server {
             socket.on("message", (msg) => {
                 if (msg == "keepalive") { return };
 
-                if (msg == "RequestChunks" && this.vrSocket != null) {
-                    this.vrSocket.emit("RequestChunks");
+                if ((msg == "RequestChunks" || msg == "PlaceBlock" || msg == "BreakBlock") && this.vrSocket != null) {
+                    this.vrSocket.emit(msg);
                     return;
                 }
 
