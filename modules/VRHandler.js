@@ -96,13 +96,6 @@ class VRHandler {
                 }));
             }
         }, 150);
-
-        setTimeout(async () => {
-            JSONSender.setBlock(ws, new Vec3(-10, -10, -10), "stone");
-            vrSocket.send(JSON.stringify({
-                blockCoords: [["minecraft:stone"], [new Vec3(-10, -10, -10)]]
-            }));
-        }, 3000)
     }
 }
 
