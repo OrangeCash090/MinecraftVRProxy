@@ -63,6 +63,24 @@ class VRHandler {
             }
         })
 
+        vrSocket.on("PlaceBlock", async () => {
+            if (!this.loadingWorld) {
+                JSONSender.setBlock(ws, this.headCube.cframe.position, "stone");
+                vrSocket.send(JSON.stringify({
+                    blockCoords: [["minecraft:stone"], [this.headCube.cframe.position]];
+                }));
+            }
+        })
+
+        vrSocket.on("BreakBlock", async () => {
+            if (!this.loadingWorld) {
+                JSONSender.setBlock(ws, this.headCube.cframe.position, "air");
+                vrSocket.send(JSON.stringify({
+                    blockCoords: [["minecraft:air"], [this.headCube.cframe.position]];
+                }));
+            }
+        })
+
         setInterval(async () => {
             if (this.trackingPlayers) {
                 var currentPlayers = await PlayerHandler.onlinePlayers(ws);
@@ -78,27 +96,6 @@ class VRHandler {
                 }));
             }
         }, 150);
-
-        setTimeout(async () => {
-                        if (!this.loadingWorld) {
-                var data = [];
-
-                this.loadingWorld = true;
-                this.trackingPlayers = false;
-                this.rendering = false;
-
-                await new Promise(resolve => setTimeout(resolve, 1000));
-                data = await JSONSender.getChunk(ws, this.headCube.cframe.position);
-
-                this.loadingWorld = false;
-                this.trackingPlayers = true;
-                this.rendering = true;
-
-                vrSocket.send(JSON.stringify({
-                    blockCoords: data
-                }));
-            }
-        }, 3000)
     }
 }
 
