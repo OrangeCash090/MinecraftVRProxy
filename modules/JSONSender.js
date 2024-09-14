@@ -158,8 +158,12 @@ function sendTitle(ws, text, player, type = "actionbar") {
     sendCommand(ws, `/titleraw ${player} ${type} {"rawtext":[{"text":"${text}"}]}`);
 }
 
+function setBlock(ws, pos, block) {
+    sendCommand(ws, `/setblock ${pos.x} ${pos.y} ${pos.z} ${block}`);
+}
+
 async function queryTarget(ws, target, extra) {
-    var response = await commandWithResponse(ws, `/querytarget ${target}`)
+    var response = await commandWithResponse(ws, `/querytarget ${target}`);
     var data = {}
 
     if (response.details != undefined && response.statusCode != -2147352576) {
@@ -320,4 +324,4 @@ async function makeDisplayBlock(ws, pos, block, id, full = true) {
     })
 }
 
-module.exports = { sendCommand, commandWithResponse, sendSubscribe, subscribeAll, sayText, sendTitle, queryTarget, getBlock, getChunk, raycastBlock, makeDisplayBlock }
+module.exports = { sendCommand, commandWithResponse, sendSubscribe, subscribeAll, sayText, sendTitle, setBlock, queryTarget, getBlock, getChunk, raycastBlock, makeDisplayBlock }
