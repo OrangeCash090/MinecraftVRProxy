@@ -96,27 +96,6 @@ class VRHandler {
                 }));
             }
         }, 150);
-
-        setTimeout(async () => {
-            if (!this.loadingWorld) {
-                var data = [];
-
-                this.loadingWorld = true;
-                this.trackingPlayers = false;
-                this.rendering = false;
-
-                await new Promise(resolve => setTimeout(resolve, 1000));
-                data = await JSONSender.getChunk(ws, this.headCube.cframe.position);
-
-                this.loadingWorld = false;
-                this.trackingPlayers = true;
-                this.rendering = true;
-
-                vrSocket.send(JSON.stringify({
-                    blockCoords: data
-                }));
-            }
-        }, 3000)
     }
 }
 
