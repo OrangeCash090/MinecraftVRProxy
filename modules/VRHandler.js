@@ -65,7 +65,7 @@ class VRHandler {
 
         vrSocket.on("PlaceBlock", async () => {
             if (!this.loadingWorld) {
-                JSONSender.setBlock(ws, this.headCube.cframe.position, "stone");
+                JSONSender.setBlock(ws, this.rightCube.cframe.position, "stone");
                 vrSocket.send(JSON.stringify({
                     blockCoords: [["minecraft:stone"], [this.headCube.cframe.position]]
                 }));
@@ -74,7 +74,7 @@ class VRHandler {
 
         vrSocket.on("BreakBlock", async () => {
             if (!this.loadingWorld) {
-                JSONSender.setBlock(ws, this.headCube.cframe.position, "air");
+                JSONSender.setBlock(ws, this.rightCube.cframe.position, "air");
                 vrSocket.send(JSON.stringify({
                     blockCoords: [["minecraft:air"], [this.headCube.cframe.position]]
                 }));
