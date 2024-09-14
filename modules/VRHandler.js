@@ -67,7 +67,7 @@ class VRHandler {
             if (!this.loadingWorld) {
                 JSONSender.setBlock(ws, this.headCube.cframe.position, "stone");
                 vrSocket.send(JSON.stringify({
-                    blockCoords: [["minecraft:stone"], [this.headCube.cframe.position]];
+                    blockCoords: [["minecraft:stone"], [this.headCube.cframe.position]]
                 }));
             }
         })
@@ -76,7 +76,7 @@ class VRHandler {
             if (!this.loadingWorld) {
                 JSONSender.setBlock(ws, this.headCube.cframe.position, "air");
                 vrSocket.send(JSON.stringify({
-                    blockCoords: [["minecraft:air"], [this.headCube.cframe.position]];
+                    blockCoords: [["minecraft:air"], [this.headCube.cframe.position]]
                 }));
             }
         })
