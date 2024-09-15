@@ -17,6 +17,7 @@ class VRHandler {
         this.loadingWorld = false;
         this.trackingPlayers = true;
         this.rendering = true;
+        this.pickedBlock = "stone";
 
         this.headCube = new Cube(ws, 3);
         this.leftCube = new Cube(ws, 1);
@@ -65,7 +66,7 @@ class VRHandler {
 
         vrSocket.on("PlaceBlock", async () => {
             if (!this.loadingWorld) {
-                JSONSender.setBlock(ws, this.rightCube.cframe.position, "stone");
+                JSONSender.setBlock(ws, this.rightCube.cframe.position, this.pickedBlock);
                 vrSocket.send(JSON.stringify({
                     blockCoords: [["minecraft:stone"], [this.rightCube.cframe.position.floored()]]
                 }));
@@ -79,6 +80,10 @@ class VRHandler {
                     blockCoords: [["minecraft:air"], [this.rightCube.cframe.position.floored()]]
                 }));
             }
+        })
+
+        vrSocket.on("PickBlock", async () => {
+            this.pickedBlock = await JSONSender.getBlock(ws, this.rightCube.cframe.position.floored());
         })
 
         setInterval(async () => {
