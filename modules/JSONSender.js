@@ -279,48 +279,29 @@ async function raycastBlock(ws, origin, direction, range=5) {
     });
 }
 
-async function makeDisplayBlock(ws, pos, block, id, full = true) {
+async function makeDisplayBlock(ws, pos, block, id) {
     return new Promise(async (resolve, reject) => {
-        var commands;
+        var commands = [
+            `/summon fox ${id} ${pos.x} ${pos.y} ${pos.z}`,
+            `/replaceitem entity @e[type=fox,name=${id}] slot.weapon.mainhand 0 ${block}`,
+            `/effect @e[type=fox,name=${id}] instant_health 9999999 255 true`,
+            `/effect @e[type=fox,name=${id}] resistance 999999 255 true`,
+            `/playanimation @e[type=fox,name=${id}] animation.player.sleeping none 0 "" controller.animation.fox.move`,
+            `/playanimation @e[type=fox,name=${id}] animation.creeper.swelling none 0 "v.xbasepos=0;v.ybasepos=0;v.zbasepos=0;v.xpos=0;v.ypos=0;v.zpos=0;v.xrot=0;v.yrot=0;v.zrot=0;v.scale=1;v.xzscale=1;v.yscale=1;v.swelling_scale1=2.1385*math.sqrt(v.xzscale)*math.sqrt(v.scale);v.swelling_scale2=2.1385*math.sqrt(v.yscale)*math.sqrt(v.scale);" scale`,
+            `/playanimation @e[type=fox,name=${id}] animation.ender_dragon.neck_head_movement none 0 "v.head_rotation_x=0;v.head_rotation_y=0;v.head_rotation_z=0;v.head_position_x=v.xbasepos*3741/8000;v.head_position_y=10.6925+v.ybasepos*3741/8000;v.head_position_z=17.108-v.zbasepos*3741/8000;" posshift`,
+            `/playanimation @e[type=fox,name=${id}] animation.warden.move none 0 "v.body_x_rot=90+v.xrot;v.body_z_rot=90+v.yrot;" xyrot`,
+            `/playanimation @e[type=fox,name=${id}] animation.player.attack.rotations none 0 "v.attack_body_rot_y=-v.zrot;" zrot`,
+            `/playanimation @e[type=fox,name=${id}] animation.parrot.moving none 0 "v.wing_flap=(16-v.xpos)/0.3;" xpos`,
+            `/playanimation @e[type=fox,name=${id}] animation.minecart.move.v1.0 none 0 "v.rail_offset.x=0;v.rail_offset.y=1.6562+v.ypos/16+(math.cos(v.yrot)-1)*0.00769;v.rail_offset.z=0;" ypos`,
+            `/playanimation @e[type=fox,name=${id}] animation.parrot.dance none 0 "v.dance.x=-v.zpos-math.sin(v.yrot)*0.123;v.dance.y=0;" zpos`
+        ];
 
-        if (full) {
-            commands = [
-                `/summon armor_stand Grumm ${pos.x} ${pos.y} ${pos.z}`,
-                `/tag @e[type=armor_stand,name=Grumm,tag=!"set",c=1] add "${id}"`,
-                `/tag @e[type=armor_stand,name=Grumm,tag=!"set",c=1] add set`,
-                `/execute as @e[tag="${id}"] at @s run tp @s ~~~ 260`,
-                `/effect @e[tag="${id}"] invisibility 999999 255 true`,
-                `/replaceitem entity @e[tag="${id}"] slot.weapon.mainhand 0 ${block}`,
-                `/playanimation @e[tag="${id}"] animation.armor_stand.entertain_pose null 0 "0" align.arms`,
-                `/playanimation @e[tag="${id}"] animation.player.move.arms.zombie null 0 "0" size.mini_block`,
-                `/playanimation @e[tag="${id}"] animation.ghast.scale null 0 "0" size.full_block`,
-                `/playanimation @e[tag="${id}"] animation.fireworks_rocket.move null 0 "0" align.full_block`,
-                `/execute as @e[tag="${id}"] at @s run tp ~~~`
-            ];
-        } else {
-            commands = [
-                `/summon armor_stand Grumm ${pos.x} ${pos.y} ${pos.z}`,
-                `/tag @e[type=armor_stand,name=Grumm,tag=!"set",c=1] add "${id}"`,
-                `/tag @e[type=armor_stand,name=Grumm,tag=!"set",c=1] add set`,
-                `/execute as @e[tag="${id}"] at @s run tp @s ~~~ 260`,
-                `/effect @e[tag="${id}"] invisibility 999999 255 true`,
-                `/replaceitem entity @e[tag="${id}"] slot.weapon.mainhand 0 ${block}`,
-                `/playanimation @e[tag="${id}"] animation.armor_stand.entertain_pose null 0 "0" align.arms`,
-                `/playanimation @e[tag="${id}"] animation.player.move.arms.zombie null 0 "0" size.mini_block`,
-                `/execute as @e[tag="${id}"] at @s run tp ~~~`
-            ];
+        for (let i = 0; i < commands.length; i++) {
+            sendCommand(ws, commands[i]);
+            await new Promise(resolve => setTimeout(resolve, 20));
         }
 
-        await (async function cmdLoop(i) {
-            setTimeout(async () => {
-                await commandWithResponse(ws, commands[commands.length - i]);
-                if (--i) {
-                    cmdLoop(i)
-                } else {
-                    resolve("Finished.");
-                }
-            }, 20)
-        })(commands.length);
+        resolve();
     })
 }
 
