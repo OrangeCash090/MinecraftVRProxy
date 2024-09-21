@@ -46,7 +46,7 @@ class VRHandler {
                 this.headCube.rotation = new Vec3(head.rotation.x, head.rotation.y, head.rotation.z);
                 
                 this.leftCube.position = new Vec3(leftHand.position.x * 4, leftHand.position.y * 4, leftHand.position.z * 4);
-                this.leftCube.rotation = new Vec3(leftHand.rotation.x, leftHand.rotation.y, leftHand.rotation.z):
+                this.leftCube.rotation = new Vec3(leftHand.rotation.x, leftHand.rotation.y, leftHand.rotation.z);
                 
                 this.rightCube.position = new Vec3(rightHand.position.x * 4, rightHand.position.y * 4, rightHand.position.z * 4);
                 this.rightCube.rotation = new Vec3(rightHand.rotation.x, rightHand.rotation.y, rightHand.rotation.z);
