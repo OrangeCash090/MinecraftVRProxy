@@ -1,5 +1,6 @@
 const { Vec3 } = require("vec3");
 const JSONSender = require("./JSONSender");
+const uuid4 = require("uuid4");
 
 function getOffset(scale) {
     // Coefficients for Y offset quadratic function
@@ -24,29 +25,34 @@ function getOffset(scale) {
 }
 
 class BlockEntity {
-    constructor(ws, block, name, position) {
+    constructor(ws, block, name, position, scale = 1) {
         this.ws = ws;
         this.block = block;
         this.name = name;
+        this.linkedEntity = uuid4();
 
         this.position = position;
         this.rotation = new Vec3(0,0,0);
 
-        this.offset = new Vec3(0,0,0);
-        this.size = 1;
+        this.offset = getOffset(scale);
+        this.size = scale;
 
-        this.tick = 0;
         this.updating = false;
 
-        JSONSender.makeDisplayBlock(this.ws, this.position, this.block, this.name).then(() => {
+        JSONSender.makeDisplayBlock(this.ws, this.position, this.block, this.name, this.linkedEntity).then(async () => {
+            JSONSender.sendCommand(this.ws, `/playanimation @e[type=fox,name=${this.name}] animation.creeper.swelling none 0 "v.tick=0;v.xbasepos=${this.offset.x};v.ybasepos=${this.offset.y};v.zbasepos=${this.offset.z};v.xrot=((t.rx - (q.position(0) - 0.5))*100);v.yrot=((t.ry - (q.position(1)))*100);v.zrot=0.0;v.scale=${this.size};v.xzscale=1.0;v.yscale=1.0;v.swelling_scale1=2.1385*math.sqrt(v.xzscale)*math.sqrt(v.scale);v.swelling_scale2=2.1385*math.sqrt(v.yscale)*math.sqrt(v.scale);" scale`);
+
             this.mainLoop = setInterval(() => {
                 if (this.updating) {
                     JSONSender.sendCommand(this.ws, `/tp @e[type=fox,name=${this.name}] ${this.position.x} ${this.position.y} ${this.position.z}`);
-                    JSONSender.sendCommand(this.ws, `/playanimation @e[type=fox,name=${this.name}] animation.creeper.swelling none 0 "v.tick=${this.tick};v.xbasepos=${this.offset.x};v.ybasepos=${this.offset.y};v.zbasepos=${this.offset.z};v.xrot=${this.rotation.x};v.yrot=${this.rotation.y};v.zrot=${this.rotation.z};v.scale=${this.size};v.xzscale=1.0;v.yscale=1.0;v.swelling_scale1=2.1385*math.sqrt(v.xzscale)*math.sqrt(v.scale);v.swelling_scale2=2.1385*math.sqrt(v.yscale)*math.sqrt(v.scale);" scale`);
-                    this.tick++;
+                    JSONSender.sendCommand(this.ws, `/tp @e[name=${this.linkedEntity}] ${this.position.x + (this.rotation.x/100)} ${this.position.y + (this.rotation.y/100)} ${this.position.z}`);
                 }
             }, 20);
         });
+
+        this.setRotation = (x, y, z) => {
+            this.rotation = new Vec3(x % 360, y % 360, z % 360);
+        }
 
         this.scale = (num) => {
             this.size = num;
